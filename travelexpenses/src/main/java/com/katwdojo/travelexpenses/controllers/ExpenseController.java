@@ -24,13 +24,15 @@ public class ExpenseController {
 	
 	@GetMapping("/")
 	public String home(Model viewModel, @ModelAttribute("expenses")Expense expenses) {
-		viewModel.addAttribute("expenses", expenseService.getAllExpenses());
+		viewModel.addAttribute("expenseList", expenseService.getAllExpenses());
 		return "home.jsp";
 	}
 	
 	@PostMapping("/newexpense")
-	public String newExpense(@Valid @ModelAttribute("expenses") Expense expenses, BindingResult result) {
+	public String newExpense(@Valid @ModelAttribute("expenses") Expense expenses, BindingResult result, Model viewModel) {
+		System.out.println("New expense");
 		if (result.hasErrors()) {
+			viewModel.addAttribute("expenseList", expenseService.getAllExpenses());
 			return "home.jsp";
 		}else {
 			expenseService.saveExpense(expenses);
@@ -45,9 +47,9 @@ public class ExpenseController {
 		return "edit.jsp";
 	}
 	
-	@PutMapping("/editexpense/{id}")
-	public String update(@PathVariable Long id, @ModelAttribute("editExpense") Expense expenses) {
-		expenseService.updateExpense(expenses);
+	@PutMapping("/edit/{id}")
+	public String update(@PathVariable Long id, @ModelAttribute("editExpense") Expense editExpense) {
+		expenseService.updateExpense(editExpense);
 		return "redirect:/";
 	}
 	

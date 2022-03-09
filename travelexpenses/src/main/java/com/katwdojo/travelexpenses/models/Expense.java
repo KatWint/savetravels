@@ -13,7 +13,10 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @Entity
 @Table(name="expenses")
@@ -21,14 +24,17 @@ public class Expense {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
-	@NotNull(message="Please fill in this section")
+	@NotBlank(message="Need name here")
+	@Size(min=2, max=100)
 	private String name;
-	@NotNull(message="Please fill in this section")
+	@NotBlank(message="Need name of vendor here")
+	@Size(min=2, max=100)
 	private String vendor;
 	@NotNull(message="Please fill in this section")
 	@Min(1)
 	private Integer amount;
-	@NotNull(message="Please fill in this section")
+	@NotBlank(message="Need a description here")
+	@Size(min=2, max=100)
 	private String description;
 	@Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -102,7 +108,7 @@ public class Expense {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
+
 	@PrePersist
     protected void onCreate(){
         this.createdAt = new Date();
